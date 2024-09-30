@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5120a970404f418419c83af871d9a022
+guid: eee239821c2dee4429fa8125a1fd6023
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
@@ -7,8 +7,8 @@ ModelImporter:
       74: 416870459326255563
     second: tpose
   - first:
-      74: -4630368382552359268
-    second: RunRight
+      74: -4202689071170738779
+    second: RunLeft
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -24,7 +24,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'human_male_runright_01' has import animation
+    animationImportWarnings: "\nClip 'human_male_runleft_01' has import animation
       warnings that might lower retargeting quality:\nNote: Activate translation
       DOF on avatar to improve retargeting quality.\n\t'Scapula_L' has translation
       animation that will be discarded.\n"
@@ -70,8 +70,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: RunRight
-      takeName: human_male_runright_01
+      name: RunLeft
+      takeName: human_male_runleft_01
       internalID: 0
       firstFrame: 2
       lastFrame: 42
@@ -581,13 +581,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: RunRight(Clone)
+    - name: RunLeft(Clone)
       parentName: 
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Armature
-      parentName: RunRight(Clone)
+      parentName: RunLeft(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
