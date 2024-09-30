@@ -686,8 +686,55 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7505910196486445590, guid: 42eddb8a5c74fde4a8256c5b247134c6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6674976619517825204}
+    - targetCorrespondingSourceObject: {fileID: 7505910196486445590, guid: 42eddb8a5c74fde4a8256c5b247134c6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6674976619517825203}
   m_SourcePrefab: {fileID: 100100000, guid: 42eddb8a5c74fde4a8256c5b247134c6, type: 3}
+--- !u!1 &6595453526360129388 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7505910196486445590, guid: 42eddb8a5c74fde4a8256c5b247134c6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6210079261736678354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6674976619517825202 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6020980567257235361, guid: 42eddb8a5c74fde4a8256c5b247134c6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6210079261736678354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6674976619517825203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6595453526360129388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6660e7901f4a36a49ad796f236b08ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 6674976619517825202}
+  LocomotionBlendSpeed: 4
+--- !u!114 &6674976619517825204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6595453526360129388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e3132ef78e30714581080d4edb09884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CurrentPlayerMovementState>k__BackingField: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
