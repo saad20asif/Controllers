@@ -8,6 +8,8 @@ namespace FablockGaming.FinalCharacterController
     [DefaultExecutionOrder(-1)]  // Because we want to run this script before other script
     public class PlayerLocomotionInput : MonoBehaviour, PlayerControls.IPlayerLocomotionMapActions
     {
+        [SerializeField] private bool HoldToSprint = true;
+        public bool SprintToggledOn { get; private set; }
         public PlayerControls PlayerControls { get; private set; }
         public Vector2 MovementInput { get; private set; }
         public Vector2 LookInput { get; private set; }
@@ -35,6 +37,18 @@ namespace FablockGaming.FinalCharacterController
         public void OnLook(InputAction.CallbackContext context)
         {
             LookInput = context.ReadValue<Vector2>();
+        }
+
+        public void OnToggleSprint(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                SprintToggledOn = HoldToSprint || !SprintToggledOn;
+            }
+            else if(context.canceled)
+            {
+                SprintToggledOn = !HoldToSprint && SprintToggledOn;
+            }
         }
     }
 }

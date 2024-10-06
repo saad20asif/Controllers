@@ -15,6 +15,8 @@ namespace FablockGaming.FinalCharacterController
         [Header("Base Movement")]
         public float RunAcceleration = 0.25f;
         public float RunSpeed = 4f;
+        public float SprintAcceleration = 0.5f;
+        public float SprintSpeed = 7f;
         public float Drag = 0.1f;
         public float MovingThreshold = 0.01f;
 
@@ -51,12 +53,20 @@ namespace FablockGaming.FinalCharacterController
         {
             bool _isMovementInput = _playerLocomotionInput.MovementInput != Vector2.zero;
             bool _isMovementLaterally = IsMovingLaterally();
-            
-            PlayerMovementState _lateralState = _isMovementLaterally || _isMovementInput? PlayerMovementState.Running : PlayerMovementState.Idling;
+            bool _isSprinting = _playerLocomotionInput.SprintToggledOn && _isMovementLaterally;
+
+
+            PlayerMovementState _lateralState = _isSprinting?PlayerMovementState.Sprinting :
+                                                _isMovementLaterally || _isMovementInput? PlayerMovementState.Running : PlayerMovementState.Idling;
             _playerState.SetPlayerMovement(_lateralState);
         }
         private void HandleLateralMovement()
         {
+            
+            bool _isSprinting = _playerState.CurrentPlayerMovementState == PlayerMovementState.Sprinting;
+            float _lateralAcceleration = _isSprinting ? SprintAcceleration : RunAcceleration; // State dependent acc and speed
+            float _clampLateralMagitude = _isSprinting ? SprintSpeed : RunSpeed;
+
             Vector3 _cameraForwardXZ = new Vector3(PlayerCamera.transform.forward.x, 0f, PlayerCamera.transform.forward.z).normalized;//Represents the forward direction of the camera. This is used for forward/backward movement relative to the camera.
             Vector3 _cameraRightXZ = new Vector3(PlayerCamera.transform.right.x, 0f, PlayerCamera.transform.right.z).normalized;//Represents the right direction of the camera. This is used for left/right movement relative to the camera
             Vector3 _movementDirection = _cameraRightXZ * _playerLocomotionInput.MovementInput.x + _cameraForwardXZ * _playerLocomotionInput.MovementInput.y;
@@ -66,7 +76,7 @@ namespace FablockGaming.FinalCharacterController
             Vector3 _newVelocity = CharacterController.velocity + _movementDelta;
             Vector3 _currentDrag = _newVelocity.normalized * Drag * Time.deltaTime;
             _newVelocity = (_newVelocity.magnitude > Drag * Time.deltaTime) ? _newVelocity - _currentDrag : Vector3.zero; // If the player's speed is greater than the drag effect, the velocity is reduced by drag. If not, the velocity is set to zero (player stops completely).
-            _newVelocity = Vector3.ClampMagnitude(_newVelocity, RunSpeed);
+            _newVelocity = Vector3.ClampMagnitude(_newVelocity, _clampLateralMagitude);
 
             CharacterController.Move(_newVelocity * Time.deltaTime);
         }
