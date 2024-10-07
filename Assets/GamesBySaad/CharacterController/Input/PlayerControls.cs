@@ -55,6 +55,15 @@ namespace FablockGaming.FinalCharacterController.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""9803cf0c-b9c7-4b5a-872d-02bf1cc9a125"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -145,6 +154,17 @@ namespace FablockGaming.FinalCharacterController.Input
                     ""action"": ""ToggleSprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f45e294b-b4c3-4edc-8534-350500db9d33"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -156,6 +176,7 @@ namespace FablockGaming.FinalCharacterController.Input
             m_PlayerLocomotionMap_Movement = m_PlayerLocomotionMap.FindAction("Movement", throwIfNotFound: true);
             m_PlayerLocomotionMap_look = m_PlayerLocomotionMap.FindAction("look", throwIfNotFound: true);
             m_PlayerLocomotionMap_ToggleSprint = m_PlayerLocomotionMap.FindAction("ToggleSprint", throwIfNotFound: true);
+            m_PlayerLocomotionMap_Jump = m_PlayerLocomotionMap.FindAction("Jump", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -220,6 +241,7 @@ namespace FablockGaming.FinalCharacterController.Input
         private readonly InputAction m_PlayerLocomotionMap_Movement;
         private readonly InputAction m_PlayerLocomotionMap_look;
         private readonly InputAction m_PlayerLocomotionMap_ToggleSprint;
+        private readonly InputAction m_PlayerLocomotionMap_Jump;
         public struct PlayerLocomotionMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -227,6 +249,7 @@ namespace FablockGaming.FinalCharacterController.Input
             public InputAction @Movement => m_Wrapper.m_PlayerLocomotionMap_Movement;
             public InputAction @look => m_Wrapper.m_PlayerLocomotionMap_look;
             public InputAction @ToggleSprint => m_Wrapper.m_PlayerLocomotionMap_ToggleSprint;
+            public InputAction @Jump => m_Wrapper.m_PlayerLocomotionMap_Jump;
             public InputActionMap Get() { return m_Wrapper.m_PlayerLocomotionMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -245,6 +268,9 @@ namespace FablockGaming.FinalCharacterController.Input
                 @ToggleSprint.started += instance.OnToggleSprint;
                 @ToggleSprint.performed += instance.OnToggleSprint;
                 @ToggleSprint.canceled += instance.OnToggleSprint;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
 
             private void UnregisterCallbacks(IPlayerLocomotionMapActions instance)
@@ -258,6 +284,9 @@ namespace FablockGaming.FinalCharacterController.Input
                 @ToggleSprint.started -= instance.OnToggleSprint;
                 @ToggleSprint.performed -= instance.OnToggleSprint;
                 @ToggleSprint.canceled -= instance.OnToggleSprint;
+                @Jump.started -= instance.OnJump;
+                @Jump.performed -= instance.OnJump;
+                @Jump.canceled -= instance.OnJump;
             }
 
             public void RemoveCallbacks(IPlayerLocomotionMapActions instance)
@@ -280,6 +309,7 @@ namespace FablockGaming.FinalCharacterController.Input
             void OnMovement(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnToggleSprint(InputAction.CallbackContext context);
+            void OnJump(InputAction.CallbackContext context);
         }
     }
 }
