@@ -19,6 +19,8 @@ namespace FablockGaming.FinalCharacterController
         public float SprintSpeed = 7f;
         public float Drag = 0.1f;
         public float MovingThreshold = 0.01f;
+        public float Gravity = 25f;
+        public float JumpSpeed = 25f;
 
         [Header("Camera Settings")]
         public float LookSenseH = 0.1f;
@@ -31,6 +33,8 @@ namespace FablockGaming.FinalCharacterController
 
         private Vector2 _cameraRotation = Vector2.zero;
         private Vector2 _playerTargetRotation = Vector2.zero;
+
+        private float _verticalvelocity = 0f;
         #endregion
 
         #region Startup Methods
@@ -46,6 +50,7 @@ namespace FablockGaming.FinalCharacterController
         private void Update()
         {
             UpdateMovementState();
+            HandleVerticalMovement();
             HandleLateralMovement();
         }
 
@@ -54,16 +59,40 @@ namespace FablockGaming.FinalCharacterController
             bool _isMovementInput = _playerLocomotionInput.MovementInput != Vector2.zero;
             bool _isMovementLaterally = IsMovingLaterally();
             bool _isSprinting = _playerLocomotionInput.SprintToggledOn && _isMovementLaterally;
+            bool _isGrounded = IsGrounded();
 
 
             PlayerMovementState _lateralState = _isSprinting?PlayerMovementState.Sprinting :
                                                 _isMovementLaterally || _isMovementInput? PlayerMovementState.Running : PlayerMovementState.Idling;
             _playerState.SetPlayerMovement(_lateralState);
+
+            if(!_isGrounded && CharacterController.velocity.y >=0)
+            {
+                _playerState.SetPlayerMovement(PlayerMovementState.Jumping);
+            }
+            else if(!_isGrounded && CharacterController.velocity.y <0f)
+            {
+                _playerState.SetPlayerMovement(PlayerMovementState.Falling);
+            }
+        }
+        private void HandleVerticalMovement()
+        {
+            bool _isGrounded = _playerState.InGroundedState();
+            if (_isGrounded && _verticalvelocity < 0)
+                _verticalvelocity = 0;
+            _verticalvelocity -= Gravity*Time.deltaTime;
+
+            if(_playerLocomotionInput.JumpPressed && _isGrounded)
+            {
+                _verticalvelocity += Mathf.Sqrt(JumpSpeed * 3 * Gravity);
+            }
         }
         private void HandleLateralMovement()
         {
             
             bool _isSprinting = _playerState.CurrentPlayerMovementState == PlayerMovementState.Sprinting;
+            bool _isGrounded = _playerState.InGroundedState();
+
             float _lateralAcceleration = _isSprinting ? SprintAcceleration : RunAcceleration; // State dependent acc and speed
             float _clampLateralMagitude = _isSprinting ? SprintSpeed : RunSpeed;
 
@@ -71,19 +100,28 @@ namespace FablockGaming.FinalCharacterController
             Vector3 _cameraRightXZ = new Vector3(PlayerCamera.transform.right.x, 0f, PlayerCamera.transform.right.z).normalized;//Represents the right direction of the camera. This is used for left/right movement relative to the camera
             Vector3 _movementDirection = _cameraRightXZ * _playerLocomotionInput.MovementInput.x + _cameraForwardXZ * _playerLocomotionInput.MovementInput.y;
 
-            Vector3 _movementDelta = _movementDirection * RunAcceleration * Time.deltaTime;
+            Vector3 _movementDelta = _movementDirection * _lateralAcceleration * Time.deltaTime;
 
             Vector3 _newVelocity = CharacterController.velocity + _movementDelta;
             Vector3 _currentDrag = _newVelocity.normalized * Drag * Time.deltaTime;
             _newVelocity = (_newVelocity.magnitude > Drag * Time.deltaTime) ? _newVelocity - _currentDrag : Vector3.zero; // If the player's speed is greater than the drag effect, the velocity is reduced by drag. If not, the velocity is set to zero (player stops completely).
             _newVelocity = Vector3.ClampMagnitude(_newVelocity, _clampLateralMagitude);
-
+            _newVelocity.y += _verticalvelocity;
+            
             CharacterController.Move(_newVelocity * Time.deltaTime);
         }
+
+        #endregion
+
+        #region State Checks
         private bool IsMovingLaterally()
         {
             Vector3 _lateralVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z);
             return _lateralVelocity.magnitude > MovingThreshold;
+        }
+        private bool IsGrounded()
+        {
+            return CharacterController.isGrounded;
         }
         #endregion
 
