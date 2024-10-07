@@ -80,11 +80,12 @@ namespace FablockGaming.FinalCharacterController
             bool _isGrounded = _playerState.InGroundedState();
             if (_isGrounded && _verticalvelocity < 0)
                 _verticalvelocity = 0;
-            _verticalvelocity -= Gravity*Time.deltaTime;
+            _verticalvelocity -= Gravity*Time.deltaTime; // it means player is in the air so apply gravity 
 
             if(_playerLocomotionInput.JumpPressed && _isGrounded)
             {
                 _verticalvelocity += Mathf.Sqrt(JumpSpeed * 3 * Gravity);
+                print("Applying vertical velocity : " + _verticalvelocity);
             }
         }
         private void HandleLateralMovement()

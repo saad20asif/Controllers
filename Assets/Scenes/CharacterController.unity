@@ -618,6 +618,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1673201924017010757, guid: 42eddb8a5c74fde4a8256c5b247134c6,
+        type: 3}
+      propertyPath: m_SkinWidth
+      value: 0.0001
+      objectReference: {fileID: 0}
     - target: {fileID: 5416728407016715194, guid: 42eddb8a5c74fde4a8256c5b247134c6,
         type: 3}
       propertyPath: Drag
